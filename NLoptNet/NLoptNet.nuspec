@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>Brannon King</authors>
+		<owners>$author$</owners>
+		<projectUrl>https://github.com/BrannonKing/NLoptNet</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>This is a .NET wrapper around the NLopt C library. It includes NLopt 2.4.2, both the 32bit and 64bit DLLs.</description>
+		<summary>.NET wrapper for NLopt.</summary>
+		<releaseNotes>Initial Release</releaseNotes>
+		<copyright>Copyright © 2014 Kingtown Software</copyright>
+		<language>en-US</language>
+		<tags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</tags>
+	</metadata>
+	<files>
+		<file src="Install.ps1" target="tools"/>
+		<file src="bin\Release\net40\*.*" target="lib\net40"/>
+		<file src="bin\Release\net45\*.*" target="lib\net45"/>
+	</files>
+</package>
