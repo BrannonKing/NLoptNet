@@ -46,3 +46,15 @@ solver.AddLessOrEqualZeroConstraint((variables, gradient) =>
 	return variables[0] - 100.0;
 });
 ```
+To use the Augmented Lagrangian:
+```csharp
+using(var solver = new NLoptSolver(NLoptAlgorithm.LN_AUGLAG, 2, 0.001, 1000, NLoptAlgorithm.LN_SBPLX))
+{
+	solver.SetLowerBounds(new[] { 1.0, 1.0 });
+	solver.SetUpperBounds(new[] { 200.0, 200.0 });
+	solver.AddLessOrEqualZeroConstraint(Constrain);
+	solver.SetMinObjective(Score);
+	var result = solver.Optimize(best, out finalScore);
+}
+```
+Contributions are welcome. Please read through the NLopt documentation before posting questions/issues here.
