@@ -79,7 +79,7 @@ namespace NLoptNet
 			{
 				var res = nlopt_set_xtol_rel(_opt, relativeStoppingTolerance);
 				if (res != NloptResult.SUCCESS)
-					throw new ArgumentException("Unable to set primary tolerance. Result: " + res, "tolerance");
+					throw new ArgumentException("Unable to set primary tolerance. Result: " + res, "relativeStoppingTolerance");
 			}
 
 			if (maximumIterations > 0)
@@ -95,7 +95,7 @@ namespace NLoptNet
 				{
 					var res = nlopt_set_xtol_rel(inner, relativeStoppingTolerance);
 					if (res != NloptResult.SUCCESS)
-						throw new ArgumentException("Unable to set secondary tolerance. Result: " + res, "tolerance");
+						throw new ArgumentException("Unable to set secondary tolerance. Result: " + res, "relativeStoppingTolerance");
 				}
 
 				if (maximumIterations > 0)
@@ -205,14 +205,14 @@ namespace NLoptNet
 				throw new ArgumentException("Unable to set the objective function. Result: " + res, "objective");
 		}
 
-		public void SetLowerBounds(double[] minimums)
+		public void SetLowerBounds(params double[] minimums)
 		{
 			var res = nlopt_set_lower_bounds(_opt, minimums);
 			if (res != NloptResult.SUCCESS)
 				throw new ArgumentException("Unable to set the lower bounds. Result: " + res, "minimums");
 		}
 
-		public void SetUpperBounds(double[] maximums)
+		public void SetUpperBounds(params double[] maximums)
 		{
 			var res = nlopt_set_upper_bounds(_opt, maximums);
 			if (res != NloptResult.SUCCESS)
