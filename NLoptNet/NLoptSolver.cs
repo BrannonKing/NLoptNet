@@ -41,7 +41,7 @@ namespace NLoptNet
 		private static extern NloptResult nlopt_set_max_objective(IntPtr opt, nlopt_func f, IntPtr data);
 
 		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		private static extern NLoptAlgorithm nlopt_get_altorithm(IntPtr opt);
+		private static extern NLoptAlgorithm nlopt_get_algorithm(IntPtr opt);
 		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern uint nlopt_get_dimension(IntPtr opt);
 
@@ -52,6 +52,8 @@ namespace NLoptNet
 
 		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_add_inequality_constraint(IntPtr opt, nlopt_func fc, IntPtr data, double tolerance);
+		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern NloptResult nlopt_add_equality_constraint(IntPtr opt, nlopt_func fc, IntPtr data, double tolerance);
 
 		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_xtol_rel(IntPtr opt, double tolerance);
@@ -112,7 +114,7 @@ namespace NLoptNet
 		/// <summary>
 		/// Primary/outer algorithm.
 		/// </summary>
-		public NLoptAlgorithm Algorithm { get { return nlopt_get_altorithm(_opt); } }
+		public NLoptAlgorithm Algorithm { get { return nlopt_get_algorithm(_opt); } }
 
 		/// <summary>
 		/// Number of variables.
@@ -142,8 +144,57 @@ namespace NLoptNet
 			}
 		}
 
+		/// <summary>
+		/// Check if an inequality constaint can be applied on current algorithm.
+		/// In NLopt, api/options.c has a function inequality_ok() which do the same verification.
+		/// </summary>
+		protected void CheckInequalityConstraintAvailability()
+		{
+			NLoptAlgorithm algorithm = Algorithm;
+			switch (algorithm)
+			{
+				case NLoptAlgorithm.LD_MMA:
+				case NLoptAlgorithm.LD_CCSAQ:
+				case NLoptAlgorithm.LD_SLSQP:
+				case NLoptAlgorithm.LN_COBYLA:
+				case NLoptAlgorithm.GN_ISRES:
+				case NLoptAlgorithm.GN_ORIG_DIRECT:
+				case NLoptAlgorithm.GN_ORIG_DIRECT_L:
+				case NLoptAlgorithm.AUGLAG:
+				case NLoptAlgorithm.AUGLAG_EQ:
+				case NLoptAlgorithm.LN_AUGLAG:
+				case NLoptAlgorithm.LN_AUGLAG_EQ:
+				case NLoptAlgorithm.LD_AUGLAG:
+				case NLoptAlgorithm.LD_AUGLAG_EQ:
+					break;
+
+				default:
+					throw new ArgumentException("Algorithm " + algorithm.ToString() + " does not support inequality constraint.");
+			}
+		}
+
+		/// <summary>
+		/// Check if an equality constaint can be applied on current algorithm.
+		/// In NLopt, api/options.c has a function equality_ok() which do the same verification.
+		/// </summary>
+		protected void CheckEqualityConstraintAvailability()
+		{
+			NLoptAlgorithm algorithm = Algorithm;
+			switch (algorithm)
+			{
+				case NLoptAlgorithm.LD_SLSQP:
+				case NLoptAlgorithm.GN_ISRES:
+				case NLoptAlgorithm.LN_COBYLA:
+					break;
+
+				default:
+					throw new ArgumentException("Algorithm " + algorithm.ToString() + " does not support equality constraint.");
+			}
+		}
+
 		public void AddLessOrEqualZeroConstraint(Func<double[], double> constraint, double tolerance = 0.001)
 		{
+			CheckInequalityConstraintAvailability();
 			nlopt_func func = (u, values, gradient, data) =>
 			{
 				if (gradient != null)
@@ -162,9 +213,39 @@ namespace NLoptNet
 		/// </summary>
 		public void AddLessOrEqualZeroConstraint(Func<double[], double[], double> constraint, double tolerance = 0.001)
 		{
+			CheckInequalityConstraintAvailability();
 			nlopt_func func = (u, values, gradient, data) => constraint.Invoke(values, gradient);
 			_funcCache.Add(constraint, func);
 			var res = nlopt_add_inequality_constraint(_opt, func, IntPtr.Zero, tolerance);
+			if (res != NloptResult.SUCCESS)
+				throw new ArgumentException("Unable to add the constraint. Result: " + res, "constraint");
+		}
+
+		public void AddEqualZeroConstraint(Func<double[], double> constraint, double tolerance = 0.001)
+		{
+			CheckEqualityConstraintAvailability();
+			nlopt_func func = (u, values, gradient, data) =>
+			{
+				if (gradient != null)
+					throw new InvalidOperationException("Expected the constraint to handle the gradient.");
+				return constraint.Invoke(values);
+			};
+			_funcCache.Add(constraint, func);
+
+			var res = nlopt_add_equality_constraint(_opt, func, IntPtr.Zero, tolerance);
+			if (res != NloptResult.SUCCESS)
+				throw new ArgumentException("Unable to add the constraint. Result: " + res, "constraint");
+		}
+
+		/// <summary>
+		/// The gradient and current variables are passed to the constraint.
+		/// </summary>
+		public void AddEqualZeroConstraint(Func<double[], double[], double> constraint, double tolerance = 0.001)
+		{
+			CheckEqualityConstraintAvailability();
+			nlopt_func func = (u, values, gradient, data) => constraint.Invoke(values, gradient);
+			_funcCache.Add(constraint, func);
+			var res = nlopt_add_equality_constraint(_opt, func, IntPtr.Zero, tolerance);
 			if (res != NloptResult.SUCCESS)
 				throw new ArgumentException("Unable to add the constraint. Result: " + res, "constraint");
 		}
