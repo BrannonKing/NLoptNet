@@ -19,9 +19,9 @@ namespace NLoptNet
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate double nlopt_func(uint n, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] double[] x, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] double[] gradient, IntPtr data);
+		private delegate double nlopt_func(uint n, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In] double[] x, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In, Out] double[] gradient, IntPtr data);
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void nlopt_mfunc(uint m, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] result, uint n, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] x, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] gradient, IntPtr data);
+		private delegate void nlopt_mfunc(uint m, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In, Out] double[] result, uint n, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In] double[] x, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In, Out] double[] gradient, IntPtr data);
 
 		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_version(out int major, out int minor, out int bugfix);

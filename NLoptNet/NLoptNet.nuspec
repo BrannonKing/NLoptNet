@@ -8,9 +8,9 @@
 		<owners>$author$</owners>
 		<projectUrl>https://github.com/BrannonKing/NLoptNet</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>This is a .NET wrapper around the NLopt C library. It includes NLopt 2.4.2, both the 32bit and 64bit DLLs.</description>
+		<description>This is a .NET wrapper around the NLopt C library. It includes NLopt 2.4.2, both the 32bit and 64bit DLLs, which are licensed under LGPL.</description>
 		<summary>.NET wrapper for NLopt.</summary>
-		<releaseNotes>Initial Release</releaseNotes>
+		<releaseNotes>Fixed incorrect marshalling of the gradient.</releaseNotes>
 		<copyright>Copyright © 2014 Kingtown Software</copyright>
 		<language>en-US</language>
 		<tags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</tags>
