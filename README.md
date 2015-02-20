@@ -1,8 +1,9 @@
 NLoptNet
 ========
 
-This is a C# wrapper around the NLopt C library.
+This is a C# wrapper around the NLopt C library. It includes both 32 and 64 bit DLLs. It will work with "Any CPU" projects, but this is not a "portable" project (yet).
 This particular wrapper is licensed with an MIT license, but the enclosed NLopt library carries an LGPL license.
+Thanks to [ASI](http://asirobots.com) for sponsoring some time on this project.
 
 Example:
 ```csharp
@@ -39,7 +40,7 @@ solver.SetMinObjective((variables, gradient) =>
 ```
 And add constraints like this:
 ```csharp
-solver.AddLessOrEqualZeroConstraint((variables, gradient) =>
+solver.AddEqualZeroConstraint((variables, gradient) =>
 {
 	if (gradient != null)
 		gradient[0] = 1.0;
