@@ -64,6 +64,12 @@ namespace NLoptNet
 		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_set_maxeval(IntPtr opt, int maxeval);
 
+		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern NloptResult nlopt_force_stop(IntPtr opt);
+
+		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern NloptResult nlopt_set_initial_step(IntPtr opt, double[] dx);
+
 		private IntPtr _opt;
 		private readonly Dictionary<Delegate, nlopt_func> _funcCache = new Dictionary<Delegate, nlopt_func>();
 
@@ -306,6 +312,20 @@ namespace NLoptNet
 			var result = nlopt_optimize(_opt, initialValues, ref temp);
 			finishingObjectiveScore = temp;
 			return result;
+		}
+
+		public void SetInitialStepSize(double[] x)
+		{
+			var res = nlopt_set_initial_step(_opt, x);
+			if (res != NloptResult.SUCCESS)
+				throw new ArgumentException("Unable to set the default initial step. Result: " + res);
+		}
+
+		public void ForceStop()
+		{
+			var res = nlopt_force_stop(_opt);
+			if (res != NloptResult.FORCED_STOP && res < 0)
+				throw new ArgumentException("Forced termination returned failure code " + res);
 		}
 	}
 }
