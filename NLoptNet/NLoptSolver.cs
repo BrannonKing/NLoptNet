@@ -70,6 +70,12 @@ namespace NLoptNet
 		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_initial_step(IntPtr opt, double[] dx);
 
+		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern NloptResult nlopt_set_ftol_rel(IntPtr opt, double tol);
+
+		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern NloptResult nlopt_set_ftol_abs(IntPtr opt, double tol);
+
 		private IntPtr _opt;
 		private readonly Dictionary<Delegate, nlopt_func> _funcCache = new Dictionary<Delegate, nlopt_func>();
 
@@ -326,6 +332,34 @@ namespace NLoptNet
 			var res = nlopt_force_stop(_opt);
 			if (res != NloptResult.FORCED_STOP && res < 0)
 				throw new ArgumentException("Forced termination returned failure code " + res);
+		}
+
+		public void SetRelativeToleranceOnFunctionValue(double tol)
+		{
+			var res = nlopt_set_ftol_rel(_opt, tol);
+			if (res != NloptResult.SUCCESS)
+				throw new ArgumentException("Unable to set the relative tolerance on function value. Result: " + res);
+		}
+
+		public void SetAbsoluteToleranceOnFunctionValue(double tol)
+		{
+			var res = nlopt_set_ftol_abs(_opt, tol);
+			if (res != NloptResult.SUCCESS)
+				throw new ArgumentException("Unable to set the absolute tolerance on function value. Result: " + res);
+		}
+
+		public void SetRelativeToleranceOnOptimizationParameter(double tol)
+		{
+			var res = nlopt_set_xtol_rel(_opt, tol);
+			if (res != NloptResult.SUCCESS)
+				throw new ArgumentException("Unable to set the relative tolerance on optimization parameter. Result: " + res);
+		}
+
+		public void SetAbsoluteToleranceOnOptimizationParameter(double tol)
+		{
+			var res = nlopt_set_xtol_abs1(_opt, tol);
+			if (res != NloptResult.SUCCESS)
+				throw new ArgumentException("Unable to set the absolute tolerance on optimization parameter. Result: " + res);
 		}
 	}
 }
