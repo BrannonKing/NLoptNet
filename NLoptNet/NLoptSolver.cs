@@ -76,6 +76,9 @@ namespace NLoptNet
 		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_ftol_abs(IntPtr opt, double tol);
 
+		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern NloptResult nlopt_set_xtol_abs1(IntPtr opt, double tol);
+
 		private IntPtr _opt;
 		private readonly Dictionary<Delegate, nlopt_func> _funcCache = new Dictionary<Delegate, nlopt_func>();
 
