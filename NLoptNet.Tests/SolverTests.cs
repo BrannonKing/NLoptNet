@@ -124,46 +124,46 @@ namespace NLoptNet.Tests
 			}
 		}
 
-	    [TestMethod]
-	    public void SetAndGetAbsToleranceFuncVal()
-	    {
-	        using (var solver = new NLoptSolver(NLoptAlgorithm.LD_AUGLAG, 1, 0.01, 100, NLoptAlgorithm.LN_NELDERMEAD))
-	        {
-	            const double expectedValue = Math.PI;
+		[TestMethod]
+		public void SetAndGetAbsToleranceFuncVal()
+		{
+			using (var solver = new NLoptSolver(NLoptAlgorithm.LD_AUGLAG, 1, 0.01, 100, NLoptAlgorithm.LN_NELDERMEAD))
+			{
+				const double expectedValue = Math.PI;
 
-                solver.SetAbsoluteToleranceOnFunctionValue(expectedValue);
-	            var solverTolerance = solver.GetAbsoluteToleranceOnFunctionValue();
+				solver.SetAbsoluteToleranceOnFunctionValue(expectedValue);
+				var solverTolerance = solver.GetAbsoluteToleranceOnFunctionValue();
 
-	            Assert.AreEqual(expectedValue, solverTolerance);
-	        }
-	    }
+				Assert.AreEqual(expectedValue, solverTolerance);
+			}
+		}
 
-	    [TestMethod]
-	    public void SetAndGetRelToleranceFuncVal()
-	    {
-	        using (var solver = new NLoptSolver(NLoptAlgorithm.LD_AUGLAG, 1, 0.01, 100, NLoptAlgorithm.LN_NELDERMEAD))
-	        {
-	            const double expectedValue = Math.PI;
+		[TestMethod]
+		public void SetAndGetRelToleranceFuncVal()
+		{
+			using (var solver = new NLoptSolver(NLoptAlgorithm.LD_AUGLAG, 1, 0.01, 100, NLoptAlgorithm.LN_NELDERMEAD))
+			{
+				const double expectedValue = Math.PI;
 
-	            solver.SetRelativeToleranceOnFunctionValue(expectedValue);
-	            var solverTolerance = solver.GetRelativeToleranceOnFunctionValue();
+				solver.SetRelativeToleranceOnFunctionValue(expectedValue);
+				var solverTolerance = solver.GetRelativeToleranceOnFunctionValue();
 
-	            Assert.AreEqual(expectedValue, solverTolerance);
-	        }
-	    }
+				Assert.AreEqual(expectedValue, solverTolerance);
+			}
+		}
 
-	    [TestMethod]
-	    public void SetAndGetRelToleranceOptParam()
-	    {
-	        using (var solver = new NLoptSolver(NLoptAlgorithm.LD_AUGLAG, 1, 0.01, 100, NLoptAlgorithm.LN_NELDERMEAD))
-	        {
-	            const double expectedValue = Math.PI;
+		[TestMethod]
+		public void SetAndGetRelToleranceOptParam()
+		{
+			using (var solver = new NLoptSolver(NLoptAlgorithm.LD_AUGLAG, 1, 0.01, 100, NLoptAlgorithm.LN_NELDERMEAD))
+			{
+				const double expectedValue = Math.PI;
 
-	            solver.SetRelativeToleranceOnOptimizationParameter(expectedValue);
-	            var solverTolerance = solver.GetRelativeToleranceOnOptimizationParameter();
+				solver.SetRelativeToleranceOnOptimizationParameter(expectedValue);
+				var solverTolerance = solver.GetRelativeToleranceOnOptimizationParameter();
 
-	            Assert.AreEqual(expectedValue, solverTolerance);
-	        }
-	    }
-    }
+				Assert.AreEqual(expectedValue, solverTolerance);
+			}
+		}
+	}
 }

@@ -10,8 +10,8 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>This is a .NET wrapper around the NLopt C library. It includes NLopt 2.4.2, both the 32bit and 64bit DLLs, which are licensed under LGPL.</description>
 		<summary>.NET wrapper for NLopt.</summary>
-		<releaseNotes>Added support for equal-zero constraints.</releaseNotes>
-		<copyright>Copyright © 2015 Kingtown Software</copyright>
+		<releaseNotes>Added additional tolerance methods.</releaseNotes>
+		<copyright>Copyright © 2017 Kingtown Software</copyright>
 		<language>en-US</language>
 		<tags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</tags>
 	</metadata>
