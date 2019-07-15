@@ -10,12 +10,16 @@ namespace NLoptNet
 	/// </summary>
 	public class NLoptSolver : IDisposable
 	{
-		[DllImport("kernel32", SetLastError = true)]
+		[DllImport("kernel32.dll", SetLastError = true)]
 		private static extern IntPtr LoadLibrary(string lpFileName);
 
 		static NLoptSolver()
 		{
-			LoadLibrary(Path.Combine(IntPtr.Size > 4 ? "x64" : "x32", "libnlopt-0.dll"));
+			var result = LoadLibrary(Path.Combine(IntPtr.Size > 4 ? "x64" : "x32", "nlopt.dll"));
+            if (result == IntPtr.Zero)
+            {
+                System.Diagnostics.Debug.WriteLine("Unable to load nlopt.dll. Error: " + Marshal.GetLastWin32Error());
+            }
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -23,75 +27,75 @@ namespace NLoptNet
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void nlopt_mfunc(uint m, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In, Out] double[] result, uint n, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In] double[] x, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In, Out] double[] gradient, IntPtr data);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_version(out int major, out int minor, out int bugfix);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr nlopt_create(NLoptAlgorithm algorithm, uint n);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_destroy(IntPtr opt);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
 		private static extern NloptResult nlopt_optimize(IntPtr opt, double[] x, ref double result);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_min_objective(IntPtr opt, nlopt_func f, IntPtr data);
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_max_objective(IntPtr opt, nlopt_func f, IntPtr data);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NLoptAlgorithm nlopt_get_algorithm(IntPtr opt);
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern uint nlopt_get_dimension(IntPtr opt);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_lower_bounds(IntPtr opt, double[] lowerBounds);
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_upper_bounds(IntPtr opt, double[] upperBounds);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_add_inequality_constraint(IntPtr opt, nlopt_func fc, IntPtr data, double tolerance);
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_add_equality_constraint(IntPtr opt, nlopt_func fc, IntPtr data, double tolerance);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_xtol_rel(IntPtr opt, double tolerance);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_local_optimizer(IntPtr opt, IntPtr local);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_set_maxeval(IntPtr opt, int maxeval);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_force_stop(IntPtr opt);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_initial_step(IntPtr opt, double[] dx);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_ftol_rel(IntPtr opt, double tol);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_ftol_abs(IntPtr opt, double tol);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_xtol_abs1(IntPtr opt, double tol);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_xtol_abs(IntPtr opt, double[] tol);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern double nlopt_get_ftol_rel(IntPtr opt);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern double nlopt_get_ftol_abs(IntPtr opt);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern double nlopt_get_xtol_rel(IntPtr opt);
 
-		[DllImport("libnlopt-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("nlopt.dll", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_get_xtol_abs(IntPtr opt, out double[] tol);
 
 
