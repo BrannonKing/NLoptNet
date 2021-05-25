@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NLoptNet")]
-[assembly: AssemblyDescription("NLopt Wrapper for .NET")]
+[assembly: AssemblyDescription("This is a .NET wrapper around the NLopt C library. It includes NLopt 2.6.1, both the 32bit and 64bit DLLs for Windows and 64bit SO files for Linux, which are all licensed under LGPL.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Kingtown Software")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NLoptNet")]
-[assembly: AssemblyCopyright("Copyright © 2019 Brannon King")]
+[assembly: AssemblyCopyright("Copyright © 2021 Brannon King")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

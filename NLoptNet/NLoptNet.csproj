@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>NLoptNet</RootNamespace>
+    <PackageVersion>1.3.0</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -11,51 +12,47 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Signer.pfx</AssemblyOriginatorKeyFile>
+    <Authors>Brannon King</Authors>
+    <PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
+    <PackageReleaseNotes>Updated NLoptNet to .Net Standard 2.0, added Linux target, removed legacy project format support.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="x64\nlopt.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="BuildNugetPackage.cmd" />
-    <None Include="Install.ps1" />
-    <None Include="NLoptNet.nuspec" />
     <None Include="Signer.pfx" />
-    <Content Include="x32\nlopt.exp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x32\nlopt.lib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x64\nlopt.exp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x64\nlopt.lib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="x32\nlopt.dll">
+    <None Update="runtimes\linux-arm64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-arm64/native/nlopt.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Update="runtimes\linux-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-x64/native/nlopt.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\linux-musl-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-musl-x64/native/nlopt.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-x64\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.exp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-x64\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.lib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-x86\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.exp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-x86\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.lib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-
-  <Target Name="AfterBuild">
-    <!-- Load up the information from the assembly -->
-    <GetAssemblyIdentity AssemblyFiles="$(OutputPath)$(AssemblyName).dll">
-      <Output TaskParameter="Assemblies" ItemName="OutputAssemblyInfo" />
-    </GetAssemblyIdentity>
-    <Message Text="Info: %(OutputAssemblyInfo.Version)"/>
-  </Target>
-  <Target Name="Package">
-    <!-- Ensure the Package directory exists for this project -->
-    <RemoveDir Directories="NuGet" />
-    <MakeDir Directories="NuGet" />
-    <!-- Package the project -->
-    <Exec WorkingDirectory="$(SolutionDir)\NLoptNet" Command="NuGet.exe pack -Verbosity detailed -Symbols -Exclude **\*.cs -OutputDir &quot;NuGet&quot; -Prop Platform=AnyCPU -Version %(OutputAssemblyInfo.Version) -Properties &quot;Configuration=$(Configuration)&quot;" />
-  </Target>
 </Project>

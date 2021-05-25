@@ -1,12 +1,27 @@
 ﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace NLoptNet.Tests
 {
 	[TestClass]
 	public class SolverTests
 	{
+		[DllImport("kernel32.dll", SetLastError = true)]
+		private static extern IntPtr LoadLibrary(string lpFileName);
+
+		static SolverTests()
+		{
+			// this is a workaround for the project reference not generating the deps file
+			var result = LoadLibrary(Path.Combine("runtimes", IntPtr.Size > 4 ? "win-x64" : "win-x86", "native", "nlopt.dll"));
+			if (result == IntPtr.Zero)
+			{
+				System.Diagnostics.Debug.WriteLine("Unable to load nlopt.dll. Error: " + Marshal.GetLastWin32Error());
+			}
+		}
+
 		[TestMethod]
 		public void TestBasicParabolaNoDerivative()
 		{
