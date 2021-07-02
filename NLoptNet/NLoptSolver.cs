@@ -32,9 +32,27 @@ namespace NLoptNet
         );
 #endif
 
+#if MONO
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate void nlopt_mfunc(uint m, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In, Out] double[] result, uint n, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In] double[] x, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In, Out] double[] gradient, IntPtr data);
-
+        private delegate void nlopt_mfunc(
+            uint m,
+            IntPtr p_result,
+            uint n,
+            IntPtr p_x,
+            IntPtr p_gradient,
+            IntPtr data
+        );
+#else
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void nlopt_mfunc(
+            uint m,
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In, Out] double[] result,
+            uint n,
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In] double[] x,
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In, Out] double[] gradient,
+            IntPtr data
+        );
+#endif
 
         [DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_version(out int major, out int minor, out int bugfix);
@@ -67,6 +85,11 @@ namespace NLoptNet
 		private static extern NloptResult nlopt_add_inequality_constraint(IntPtr opt, nlopt_func fc, IntPtr data, double tolerance);
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_add_equality_constraint(IntPtr opt, nlopt_func fc, IntPtr data, double tolerance);
+
+        [DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NloptResult nlopt_add_equality_mconstraint(IntPtr opt, uint m, nlopt_mfunc fc, IntPtr data, double[] tolerances);
+        [DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NloptResult nlopt_add_inequality_mconstraint(IntPtr opt, uint m, nlopt_mfunc fc, IntPtr data, double[] tolerances);
 
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_xtol_rel(IntPtr opt, double tolerance);
@@ -109,6 +132,7 @@ namespace NLoptNet
 
 		private IntPtr _opt;
 		private readonly Dictionary<Delegate, nlopt_func> _funcCache = new Dictionary<Delegate, nlopt_func>();
+        private readonly Dictionary<Delegate, nlopt_mfunc> _mfuncCache = new Dictionary<Delegate, nlopt_mfunc>();
 
 		public NLoptSolver(NLoptAlgorithm algorithm, uint numVariables, double relativeStoppingTolerance = 0.0001, int maximumIterations = 0, NLoptAlgorithm? childAlgorithm = null)
 		{
@@ -177,7 +201,8 @@ namespace NLoptNet
 		protected virtual void Dispose(bool isManaged)
 		{
 			if (isManaged)
-				_funcCache.Clear();
+                _funcCache.Clear();
+				_mfuncCache.Clear();
 
 			if (_opt != IntPtr.Zero)
 			{
@@ -289,6 +314,50 @@ namespace NLoptNet
             if (res != NloptResult.SUCCESS)
                 throw new ArgumentException("Unable to add the constraint. Result: " + res, "constraint");
         }
+        public void AddEqualZeroConstraints(Action<double[], double[]> constraints, double[] tolerances)
+        {
+            CheckEqualityConstraintAvailability();
+            nlopt_mfunc mfunc = (m, results, n, values, gradient, data) => Evaluate((int)n, values, (int)m, results, constraints);
+            _mfuncCache.Add(constraints, mfunc);
+
+            var res = nlopt_add_equality_mconstraint(_opt, (uint)tolerances.Length, mfunc, IntPtr.Zero, tolerances);
+            if (res != NloptResult.SUCCESS)
+                throw new ArgumentException("Unable to add the constraints. Result: " + res, "constraint");
+        }
+
+        public void AddEqualZeroConstraints(Action<double[], double[], double[]> constraints, double[] tolerances)
+        {
+            CheckEqualityConstraintAvailability();
+            nlopt_mfunc mfunc = (m, results, n, values, gradient, data) => Evaluate((int)n, values, gradient, (int)m, results, constraints);
+            _mfuncCache.Add(constraints, mfunc);
+
+            var res = nlopt_add_equality_mconstraint(_opt, (uint)tolerances.Length, mfunc, IntPtr.Zero, tolerances);
+            if (res != NloptResult.SUCCESS)
+                throw new ArgumentException("Unable to add the constraints. Result: " + res, "constraint");
+        }
+
+        public void AddLessOrEqualZeroConstraints(Action<double[], double[]> constraints, double[] tolerances)
+        {
+            CheckInequalityConstraintAvailability();
+            nlopt_mfunc mfunc = (m, results, n, values, gradient, data) => Evaluate((int)n, values, (int)m, results, constraints);
+            _mfuncCache.Add(constraints, mfunc);
+
+            var res = nlopt_add_inequality_mconstraint(_opt, (uint)tolerances.Length, mfunc, IntPtr.Zero, tolerances);
+            if (res != NloptResult.SUCCESS)
+                throw new ArgumentException("Unable to add the constraints. Result: " + res, "constraint");
+        }
+
+        public void AddLessOrEqualZeroConstraints(Action<double[], double[], double[]> constraints, double[] tolerances)
+        {
+            CheckInequalityConstraintAvailability();
+            nlopt_mfunc mfunc = (m, results, n, values, gradient, data) => Evaluate((int)n, values, gradient, (int)m, results, constraints);
+            _mfuncCache.Add(constraints, mfunc);
+
+            var res = nlopt_add_inequality_mconstraint(_opt, (uint)tolerances.Length, mfunc, IntPtr.Zero, tolerances);
+            if (res != NloptResult.SUCCESS)
+                throw new ArgumentException("Unable to add the constraints. Result: " + res, "constraint");
+        }
+
 
         public void SetMinObjective(Func<double[], double> objective)
         {
@@ -473,6 +542,91 @@ namespace NLoptNet
         private double Evaluate(int n, double[] values, double[] gradient, Func<double[], double[], double> func)
         {
             return func.Invoke(values, gradient);
+        }
+#endif
+
+#if MONO
+        /// <summary>
+        /// Wrapper around <paramref name="action"/> to init marshalled data if required.
+        /// </summary>
+        /// <param name="n">Size of <paramref name="p_values"/> array</param>
+        /// <param name="p_values">Memory pointer to C++ values array.</param>
+        /// <param name="m">Size of <paramref name="p_results"/> array</param>
+        /// <param name="p_results">Memory pointer to C++ results array.</param>
+        /// <param name="action">C# action delegate that must be evaluated</param>
+        private void Evaluate(int n, IntPtr p_values, int m, IntPtr p_results, Action<double[], double[]> action)
+        {
+            // results is IN/OUT (read and write)
+            // values is marshalled as IN only (read only)
+            var results = new double[m];
+            var values = new double[n];
+
+            if (p_values != IntPtr.Zero)
+            {
+                Marshal.Copy(p_values, values, 0, n);
+            }
+
+            action.Invoke(values, results);
+
+            // results has been altered
+            // Update C++ handle with new values
+            if (p_results != IntPtr.Zero)
+            {
+                Marshal.Copy(results, 0, p_results, m);
+            }
+        }
+#else
+        private void Evaluate(int n, double[] values, int m, double[] results, Action<double[], double[]> action)
+        {
+            action.Invoke(values, results);
+        }
+#endif
+
+#if MONO
+        /// <summary>
+        /// Wrapper around <paramref name="action"/> to init marshalled data if required.
+        /// </summary>
+        /// <param name="n">Size of <paramref name="p_gradient"/> and <paramref name="p_values"/> arrays</param>
+        /// <param name="p_values">Memory pointer to C++ values array.</param>
+        /// <param name="p_gradient">Memory pointer to C++ gradient array.</param>
+        /// <param name="m">Size of <paramref name="p_results"/> array</param>
+        /// <param name="p_results">Memory pointer to C++ results array.</param>
+        /// <param name="action">C# action delegate that must be evaluated</param>
+        /// <returns><paramref name="action"/> evaluation result</returns>
+        private void Evaluate(int n, IntPtr p_values, IntPtr p_gradient, int m, IntPtr p_results, Action<double[], double[], double[]> action)
+        {
+            // results and gradient are IN/OUT (read and write)
+            // values is marshalled as IN only (read only)
+            var results = new double[m];
+            var values = new double[n];
+            var gradient = new double[n];
+
+            if (p_values != IntPtr.Zero)
+            {
+                Marshal.Copy(p_values, values, 0, n);
+            }
+            if (p_gradient != IntPtr.Zero)
+            {
+                Marshal.Copy(p_gradient, gradient, 0, n);
+            }
+
+            action.Invoke(values, gradient, results);
+
+            // gradient and results have been altered
+            // Update C++ handles with new values
+            if (p_gradient != IntPtr.Zero)
+            {
+                Marshal.Copy(gradient, 0, p_gradient, n);
+            }
+            if (p_results != IntPtr.Zero)
+            {
+                Marshal.Copy(results, 0, p_results, m);
+            }
+        }
+#else
+        private void Evaluate(int n, double[] values, double[] gradient, int m, double[] results, Action<double[], double[], double[]> action)
+        {
+            action.Invoke(values, gradient, results);
         }
 #endif
 
