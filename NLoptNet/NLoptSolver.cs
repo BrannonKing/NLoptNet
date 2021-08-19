@@ -61,8 +61,8 @@ namespace NLoptNet
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_initial_step(IntPtr opt, double[] dx);
 
-        [DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
-        private static extern NloptResult nlopt_set_initial_step1(IntPtr opt, double dx);
+		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
+		private static extern NloptResult nlopt_set_initial_step1(IntPtr opt, double dx);
 
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_ftol_rel(IntPtr opt, double tol);
@@ -338,12 +338,12 @@ namespace NLoptNet
 				throw new ArgumentException("Unable to set the default initial step. Result: " + res);
 		}
 
-        public void SetInitialStepSize1(double x)
-        {
-            var res = nlopt_set_initial_step1(_opt, x);
-            if (res != NloptResult.SUCCESS)
-                throw new ArgumentException("Unable to set the default initial step. Result: " + res);
-        }
+		public void SetInitialStepSize1(double x)
+		{
+			var res = nlopt_set_initial_step1(_opt, x);
+			if (res != NloptResult.SUCCESS)
+				throw new ArgumentException("Unable to set the default initial step. Result: " + res);
+		}
 
 		public void ForceStop()
 		{
