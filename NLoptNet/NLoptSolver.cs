@@ -198,25 +198,25 @@ namespace NLoptNet
 		/// In NLopt, api/options.c has a function equality_ok() which do the same verification.
 		/// </summary>
 		protected void CheckEqualityConstraintAvailability()
-        {
-            NLoptAlgorithm algorithm = Algorithm;
-            switch (algorithm)
-            {
-                case NLoptAlgorithm.LD_SLSQP:
-                case NLoptAlgorithm.GN_ISRES:
-                case NLoptAlgorithm.LN_COBYLA:
-                case NLoptAlgorithm.AUGLAG:
-                case NLoptAlgorithm.AUGLAG_EQ:
-                case NLoptAlgorithm.LN_AUGLAG:
-                case NLoptAlgorithm.LN_AUGLAG_EQ:
-                case NLoptAlgorithm.LD_AUGLAG:
-                case NLoptAlgorithm.LD_AUGLAG_EQ:
-                    break;
+		{
+			NLoptAlgorithm algorithm = Algorithm;
+			switch (algorithm)
+			{
+				case NLoptAlgorithm.LD_SLSQP:
+				case NLoptAlgorithm.GN_ISRES:
+				case NLoptAlgorithm.LN_COBYLA:
+				case NLoptAlgorithm.AUGLAG:
+				case NLoptAlgorithm.AUGLAG_EQ:
+				case NLoptAlgorithm.LN_AUGLAG:
+				case NLoptAlgorithm.LN_AUGLAG_EQ:
+				case NLoptAlgorithm.LD_AUGLAG:
+				case NLoptAlgorithm.LD_AUGLAG_EQ:
+					break;
 
-                default:
-                    throw new ArgumentException("Algorithm " + algorithm.ToString() + " does not support equality constraint.");
-            }
-        }
+				default:
+					throw new ArgumentException("Algorithm " + algorithm.ToString() + " does not support equality constraint.");
+			}
+		}
 
 		public void AddLessOrEqualZeroConstraint(Func<double[], double> constraint, double tolerance = 0.001)
 		{
