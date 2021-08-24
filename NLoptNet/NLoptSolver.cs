@@ -205,6 +205,12 @@ namespace NLoptNet
 				case NLoptAlgorithm.LD_SLSQP:
 				case NLoptAlgorithm.GN_ISRES:
 				case NLoptAlgorithm.LN_COBYLA:
+				case NLoptAlgorithm.AUGLAG:
+				case NLoptAlgorithm.AUGLAG_EQ:
+				case NLoptAlgorithm.LN_AUGLAG:
+				case NLoptAlgorithm.LN_AUGLAG_EQ:
+				case NLoptAlgorithm.LD_AUGLAG:
+				case NLoptAlgorithm.LD_AUGLAG_EQ:
 					break;
 
 				default:
