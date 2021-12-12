@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace NLoptNet.NuGet.Tests
 {
