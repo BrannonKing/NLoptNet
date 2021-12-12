@@ -29,5 +29,5 @@ jobs:
       run: dotnet test --no-build -c Release --verbosity normal
     - name: Test package
       run: |
-        dotnet nuget add source %CD%/pack -n="LocalNLopt"
+        dotnet nuget add source ${{ env.GITHUB_WORKSPACE }}/pack -n="LocalNLopt"
         dotnet build -c Release ./NLoptNet.NuGet.Tests/NLoptNet.NuGet.Tests.csproj
