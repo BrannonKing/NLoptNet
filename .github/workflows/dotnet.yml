@@ -31,3 +31,4 @@ jobs:
       run: |
         dotnet nuget add source ${{ github.workspace }}/pack -n="LocalNLopt"
         dotnet build -c Release ./NLoptNet.NuGet.Tests/NLoptNet.NuGet.Tests.csproj
+        dotnet test --no-build -c Release --verbosity normal ./NLoptNet.NuGet.Tests/NLoptNet.NuGet.Tests.csproj
