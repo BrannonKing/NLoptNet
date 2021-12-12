@@ -35,37 +35,37 @@
     <None Include="Signer.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="runtimes\linux-arm64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-arm64/native/nlopt.so">
+    <None Include="runtimes\linux-arm64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-arm64/native/nlopt.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\linux-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-x64/native/nlopt.so">
+    <None Include="runtimes\linux-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-x64/native/nlopt.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\linux-musl-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-musl-x64/native/nlopt.so">
+    <None Include="runtimes\linux-musl-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-musl-x64/native/nlopt.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.dll">
+    <None Include="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\win-x64\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.exp">
+    <None Include="runtimes\win-x64\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.exp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\win-x64\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.lib">
+    <None Include="runtimes\win-x64\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.lib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.dll">
+    <None Include="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\win-x86\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.exp">
+    <None Include="runtimes\win-x86\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.exp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\win-x86\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.lib">
+    <None Include="runtimes\win-x86\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.lib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="lib/net47/nlopt_x32.dll">
+    <None Include="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="lib/net47/nlopt_x32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="lib/net47/nlopt_x64.dll">
+    <None Include="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="lib/net47/nlopt_x64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
