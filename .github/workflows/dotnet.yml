@@ -19,12 +19,12 @@ jobs:
         dotnet-version: | 
             3.1.x
             6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
     - name: Remove signing
       run: |
         dotnet tool install --global replace-in-file 
         replace-in-file .\nloptnet\nloptnet.csproj -set "SignAssembly>true" "SignAssembly>false"
-    - name: Restore dependencies
-      run: dotnet restore
     - name: Build
       run: dotnet build --no-restore -c Release
     - name: Pack
