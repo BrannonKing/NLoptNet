@@ -16,7 +16,7 @@
     <PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
     <PackageReleaseNotes>Support for .NET Standard and .NET Framework</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
-    <DelaySign>true</DelaySign>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
