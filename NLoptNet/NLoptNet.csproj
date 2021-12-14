@@ -10,7 +10,7 @@
     <PackageOutputPath>../pack</PackageOutputPath>
     <PlatformTarget>$(Platform)</PlatformTarget>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>  
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Signer.pfx</AssemblyOriginatorKeyFile>
     <Authors>Brannon King</Authors>
     <PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
