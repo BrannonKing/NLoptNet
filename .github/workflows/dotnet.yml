@@ -19,6 +19,13 @@ jobs:
         dotnet-version: | 
             3.1.x
             6.0.x
+    - name: Remove signing
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+        find: "SignAssembly>true"
+        replace: "SignAssembly>false"
+        regex: false
+        include: "**/*.csproj"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
