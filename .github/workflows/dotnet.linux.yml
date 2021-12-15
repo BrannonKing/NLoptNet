@@ -1,4 +1,4 @@
-name: .NET
+name: Linux
 
 on:
   push:
@@ -23,10 +23,8 @@ jobs:
     - name: Remove signing
       run: |
         dotnet tool install --global replace-in-file 
-        replace-in-file .\nloptnet\nloptnet.csproj -set "SignAssembly>true" "SignAssembly>false"
-        replace-in-file .\nloptnet\nloptnet.csproj -set "TargetFrameworks" "TargetFramework"
-        replace-in-file .\nloptnet\nloptnet.csproj -set ";net47" ""
-        replace-in-file .\nloptnet.nuget.tests\nloptnet.nuget.tests.csproj -set "net47;net48;" ""
+        replace-in-file ./nloptnet/nloptnet.csproj -set "SignAssembly>true" "SignAssembly>false" -set "TargetFrameworks" "TargetFramework" -set ";net47" ""
+        replace-in-file ./nloptnet.nuget.tests/nloptnet.nuget.tests.csproj -set "net47;net48;" ""
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
