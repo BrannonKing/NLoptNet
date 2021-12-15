@@ -1,4 +1,4 @@
-name: .NET
+name: Linux
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -23,15 +23,14 @@ jobs:
     - name: Remove signing
       run: |
         dotnet tool install --global replace-in-file 
-        replace-in-file .\nloptnet\nloptnet.csproj -set "SignAssembly>true" "SignAssembly>false"
+        replace-in-file ./NLoptNet/NLoptNet.csproj -set "SignAssembly>true" "SignAssembly>false" -set "TargetFrameworks" "TargetFramework" -set ";net47" ""
+        replace-in-file ./NLoptNet.NuGet.Tests/NLoptNet.NuGet.Tests.csproj -set "net47;net48;" ""
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore -c Release
     - name: Pack
       run: dotnet pack --no-build -c Release /p:PackageVersion=0.0.0-local
-    - name: Test
-      run: dotnet test --no-build -c Release
     - name: Test package
       run: |
         dotnet nuget add source ${{ github.workspace }}/pack -n="LocalNLopt"
