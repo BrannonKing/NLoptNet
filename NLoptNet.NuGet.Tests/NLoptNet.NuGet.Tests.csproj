@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net47;net48;netcoreapp3.1;net6.0</TargetFrameworks>
-    <Platforms>AnyCPU</Platforms>
+    <Platforms>AnyCPU;x64</Platforms>
     <IsPackable>false</IsPackable>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
