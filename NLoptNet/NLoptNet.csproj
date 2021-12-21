@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
+    <RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
     <RootNamespace>NLoptNet</RootNamespace>
     <PackageVersion>1.4.0</PackageVersion>
 	<Platforms>AnyCPU;x64</Platforms>
@@ -10,13 +11,10 @@
     <PackageOutputPath>../pack</PackageOutputPath>
     <PlatformTarget>$(Platform)</PlatformTarget>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>  
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Signer.pfx</AssemblyOriginatorKeyFile>
     <Authors>Brannon King</Authors>
     <PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
     <PackageReleaseNotes>Support for .NET Standard and .NET Framework</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
-    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -31,9 +29,6 @@
     <DebugSymbols>false</DebugSymbols>        
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="Signer.pfx" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="runtimes\linux-arm64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-arm64/native/nlopt.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
