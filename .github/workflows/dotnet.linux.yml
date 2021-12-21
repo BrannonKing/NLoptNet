@@ -17,14 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: | 
-            2.1.x
             3.1.x
             6.0.x
-    - name: Remove signing
-      run: |
-        dotnet tool install --global replace-in-file 
-        replace-in-file ./NLoptNet/NLoptNet.csproj -set "SignAssembly>true" "SignAssembly>false" -set "TargetFrameworks" "TargetFramework" -set ";net47" ""
-        replace-in-file ./NLoptNet.NuGet.Tests/NLoptNet.NuGet.Tests.csproj -set "net47;net48;" ""
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
