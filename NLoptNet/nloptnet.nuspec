@@ -14,7 +14,6 @@
     </dependencies>
   </metadata>
   <files>
-	<!-- <file src="*\**" target="\" exclude="obj\**\*.*"/> -->
 	<file src="**" exclude="**\obj\**;**\bin\**;**\Properties\**;*.cs;*.csproj" />
 	<file src="bin\AnyCPU\Release\net47\NLoptNet.dll" target="lib\net47" />
 	<file src="bin\AnyCPU\Release\net47\nlopt_*.dll" target="Binary\net47" />
