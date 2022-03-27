@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>nloptnet</id>
+    <version>1.4.0</version>
+    <authors>Brannon King</authors>
+    <description>Package Description</description>
+    <releaseNotes>Support for .NET Standard and .NET Framework</releaseNotes>
+    <tags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</tags>
+    <repository url="https://github.com/BrannonKing/NLoptNet" />
+	<dependencies>
+      <group targetFramework=".NETFramework4.7" />
+	  <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+	<!-- <file src="*\**" target="\" exclude="obj\**\*.*"/> -->
+	<file src="**" exclude="**\obj\**;*.cs;*.csproj" />
+	<file src="bin\AnyCPU\Release\net47\NLoptNet.dll" target="lib\net47" />
+	<file src="bin\AnyCPU\Release\net47\nlopt_*.dll" target="Binary\net47" />
+  </files>  
+</package>

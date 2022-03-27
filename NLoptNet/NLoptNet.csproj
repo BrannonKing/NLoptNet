@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
     <RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
+	<TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
+	<nuspecfile>nloptnet.nuspec</nuspecfile>
     <RootNamespace>NLoptNet</RootNamespace>
     <PackageVersion>1.4.0</PackageVersion>
 	<Platforms>AnyCPU;x64</Platforms>
@@ -16,7 +17,7 @@
     <PackageReleaseNotes>Support for .NET Standard and .NET Framework</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DebugType>full</DebugType>         
@@ -57,11 +58,13 @@
     <None Include="runtimes\win-x86\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.lib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="lib/net47/nlopt_x32.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="lib/net47/nlopt_x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
+  
+<!--
+<ItemGroup>
+	<None Include="runtimes\win-x86\native\*.*" Pack="true" PackagePath="Binary"></None>
+	<None Include="build\NLoptNet.props" Pack="true" PackagePath="build"></None>
+</ItemGroup>  
+-->
+
 </Project>
