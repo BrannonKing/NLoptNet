@@ -1,0 +1,9 @@
+<Project>
+  <Target Name="CopyFiles" BeforeTargets="Build" Condition="'$(TargetFramework.Contains(net4.))' == 'true'">
+    <ItemGroup>     
+      <File Include="$(MSBuildThisFileDirectory)..\Binary\net47\nlopt_x32.dll"></File>
+	  <File Include="$(MSBuildThisFileDirectory)..\Binary\net47\nlopt_x64.dll"></File>
+    </ItemGroup>
+    <Copy SourceFiles="@(File)" DestinationFolder="$(OutDir)"></Copy>
+  </Target>
+</Project>
