@@ -67,4 +67,21 @@
 </ItemGroup>  
 -->
 
+  <ItemGroup Condition="'$(TargetFramework)'=='net47'">
+	<dll32bit Include="$(ProjectDir)\runtimes\win-x86\native\nlopt.dll" />
+	<dll64bit Include="$(ProjectDir)\runtimes\win-x64\native\nlopt.dll" />
+  </ItemGroup>
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(TargetFramework)'=='net47'">
+    <Copy SourceFiles="@(dll32bit)" DestinationFiles="$(OutDir)\nlopt_x32.dll" />
+	<Copy SourceFiles="@(dll64bit)" DestinationFiles="$(OutDir)\nlopt_x64.dll" />
+  </Target>
+
+<!--
+  <ItemGroup Condition="'$(TargetFramework)'=='net47'">
+	<None Include="$(OutDir)\nlopt_x32.dll" Pack="true" PackagePath="lib\net47"></None>
+	<None Include="$(OutDir)\nlopt_x64.dll" Pack="true" PackagePath="lib\net47"></None>
+	<None Include="build\NLoptNet.props" Pack="true" PackagePath="build"></None>
+  </ItemGroup>
+-->
+
 </Project>

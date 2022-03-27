@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFrameworks>net47;net48;netcoreapp3.1;net60</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <IsPackable>false</IsPackable>
     <LangVersion>latest</LangVersion>
@@ -26,7 +26,8 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="NLoptNet" Version="1.4.0" />
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
     <PackageReference Include="coverlet.collector" Version="3.1.0">
@@ -35,8 +36,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net47'">
-    <PackageReference Include="NLoptNet" Version="1.4.0" />
-  </ItemGroup>
-  
 </Project>
