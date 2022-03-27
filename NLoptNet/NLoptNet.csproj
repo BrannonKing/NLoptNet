@@ -6,7 +6,7 @@
 	<nuspecfile>nloptnet.nuspec</nuspecfile>
 	<NuspecProperties>version=$(PackageVersion)</NuspecProperties>
     <RootNamespace>NLoptNet</RootNamespace>
-    <PackageVersion>1.4.0</PackageVersion>
+    <PackageVersion>1.4.1</PackageVersion>
 	<Platforms>AnyCPU;x64</Platforms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
