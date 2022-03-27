@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>nloptnet</id>
-    <version>1.4.0</version>
+    <version>$version$</version>
     <authors>Brannon King</authors>
     <description>Package Description</description>
     <releaseNotes>Support for .NET Standard and .NET Framework</releaseNotes>
