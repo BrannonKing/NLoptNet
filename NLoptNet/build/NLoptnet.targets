@@ -1,5 +1,8 @@
 <Project>
-  <Target Name="CopyFiles" BeforeTargets="Build">
+  <PropertyGroup>
+	<Frameworks>|net47|net471|net472|net48|</Frameworks>
+  </PropertyGroup>
+  <Target Name="CopyFiles" BeforeTargets="Build" Condition="$(Frameworks.Contains('|$(TargetFramework)|'))">
     <ItemGroup>     
       <File Include="$(MSBuildThisFileDirectory)..\Binary\net47\nlopt_x32.dll"></File>
 	  <File Include="$(MSBuildThisFileDirectory)..\Binary\net47\nlopt_x64.dll"></File>
