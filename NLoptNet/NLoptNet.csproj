@@ -3,7 +3,7 @@
   <PropertyGroup>
     <RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
 	<TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
-	<nuspecfile>NLOptNet.nuspec</nuspecfile>
+	<nuspecfile>NLoptNet.nuspec</nuspecfile>
 	<NuspecProperties>version=$(PackageVersion)</NuspecProperties>
     <RootNamespace>NLoptNet</RootNamespace>
     <PackageVersion>1.4.1</PackageVersion>
