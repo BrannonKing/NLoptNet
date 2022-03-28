@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
-	<TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
-	<nuspecfile>NLoptNet.nuspec</nuspecfile>
-	<NuspecProperties>version=$(PackageVersion)</NuspecProperties>
-	<RootNamespace>NLoptNet</RootNamespace>
-	<PackageVersion>1.4.1</PackageVersion>
-	<Platforms>AnyCPU;x64</Platforms>
+    <RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
+    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
+    <nuspecfile>NLoptNet.nuspec</nuspecfile>
+    <NuspecProperties>version=$(PackageVersion)</NuspecProperties>
+    <RootNamespace>NLoptNet</RootNamespace>
+    <PackageVersion>1.4.1</PackageVersion>
+    <Platforms>AnyCPU;x64</Platforms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageOutputPath>../pack</PackageOutputPath>
