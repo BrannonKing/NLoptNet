@@ -17,13 +17,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: |
-          2.1.x
           3.1.x
           6.0.x
     - name: Remove netframework testing
       run: |
-        dotnet tool install --global replace-in-file 
-        replace-in-file ./NLoptNet.NuGet.Tests/NLoptNet.NuGet.Tests.csproj -set "net47;net48;" ""
+        sed -i 's/net47;net48;//g' ./NLoptNet.NuGet.Tests/NLoptNet.NuGet.Tests.csproj
     - name: Restore dependencies
       run: dotnet restore
     - name: Build

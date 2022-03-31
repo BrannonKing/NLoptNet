@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+	<Frameworks>|net47|net471|net472|net48|</Frameworks>
+  </PropertyGroup>
+  <Target Name="CopyFiles" BeforeTargets="Build" Condition="$(Frameworks.Contains('|$(TargetFramework)|'))">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\nlopt.dll" DestinationFiles="$(OutDir)\nlopt_x64.dll" />
+	<Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\win-x86\native\nlopt.dll" DestinationFiles="$(OutDir)\nlopt_x32.dll" />
+  </Target>
+</Project>
