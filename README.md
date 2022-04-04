@@ -1,8 +1,7 @@
 NLoptNet
 ========
 
-This is a C# wrapper around the NLopt C library. It includes both 32 and 64 bit DLLs. It will work with "Any CPU" projects, but this is not a "portable" project (yet).
-This particular wrapper is licensed with an MIT license, but the enclosed NLopt library carries an LGPL license.
+This is a C# wrapper around the NLopt C library. It includes both 32 and 64-bit DLLs for NLopt 2.6.1 (64-bit only on Linux). It inherits NLopt's LGPL license.
 Thanks to [ASI](http://asirobots.com) for sponsoring some time on this project.
 
 Example:
