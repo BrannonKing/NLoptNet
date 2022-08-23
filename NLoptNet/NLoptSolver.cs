@@ -1,4 +1,4 @@
-﻿#if (__MonoCS__ || (UNITY_5_3_OR_NEWER && ENABLE_MONO))
+#if (__MonoCS__ || (UNITY_5_3_OR_NEWER && ENABLE_MONO))
 // Detect if mono is used
 #define MONO
 #endif
@@ -55,7 +55,7 @@ namespace NLoptNet
 #endif
 
 		private IntPtr _opt;
-		private readonly Dictionary<Delegate, nlopt_func> _funcCache = new Dictionary<Delegate, nlopt_func>();
+		private readonly List<(Delegate, nlopt_func)> _funcCache = new List<(Delegate, nlopt_func)>();
 		private readonly Dictionary<Delegate, nlopt_mfunc> _mfuncCache = new Dictionary<Delegate, nlopt_mfunc>();
 
 		public NLoptSolver(NLoptAlgorithm algorithm, uint numVariables, double relativeStoppingTolerance = 0.0001, int maximumIterations = 0, NLoptAlgorithm? childAlgorithm = null)
@@ -197,7 +197,7 @@ namespace NLoptNet
 				CheckGradientHandling(gradient);
 				return Evaluate((int)n, values, constraint);
 			};
-			_funcCache.Add(constraint, func);
+			_funcCache.Add((constraint, func));
 
 			var res = nlopt_add_inequality_constraint(_opt, func, IntPtr.Zero, tolerance);
 			if (res != NloptResult.SUCCESS)
@@ -211,7 +211,7 @@ namespace NLoptNet
 		{
 			CheckInequalityConstraintAvailability();
 			nlopt_func func = (n, values, gradient, data) => Evaluate((int)n, values, gradient, constraint);
-			_funcCache.Add(constraint, func);
+			_funcCache.Add((constraint, func));
 			var res = nlopt_add_inequality_constraint(_opt, func, IntPtr.Zero, tolerance);
 			if (res != NloptResult.SUCCESS)
 				throw new ArgumentException("Unable to add the constraint. Result: " + res, "constraint");
@@ -225,7 +225,7 @@ namespace NLoptNet
 				CheckGradientHandling(gradient);
 				return Evaluate((int)n, values, constraint);
 			};
-			_funcCache.Add(constraint, func);
+			_funcCache.Add((constraint, func));
 
 			var res = nlopt_add_equality_constraint(_opt, func, IntPtr.Zero, tolerance);
 			if (res != NloptResult.SUCCESS)
@@ -239,7 +239,7 @@ namespace NLoptNet
 		{
 			CheckEqualityConstraintAvailability();
 			nlopt_func func = (n, values, gradient, data) => Evaluate((int)n, values, gradient, constraint);
-			_funcCache.Add(constraint, func);
+			_funcCache.Add((constraint, func));
 			var res = nlopt_add_equality_constraint(_opt, func, IntPtr.Zero, tolerance);
 			if (res != NloptResult.SUCCESS)
 				throw new ArgumentException("Unable to add the constraint. Result: " + res, "constraint");
@@ -292,7 +292,7 @@ namespace NLoptNet
 		public void SetMinObjective(Func<double[], double> objective)
 		{
 			nlopt_func func = (n, values, gradient, data) => Evaluate((int)n, values, objective);
-			_funcCache.Add(objective, func);
+			_funcCache.Add((objective, func));
 			var res = nlopt_set_min_objective(_opt, func, IntPtr.Zero);
 			if (res != NloptResult.SUCCESS)
 				throw new ArgumentException("Unable to set the objective function. Result: " + res, "objective");
@@ -301,7 +301,7 @@ namespace NLoptNet
 		public void SetMinObjective(Func<double[], double[], double> objective)
 		{
 			nlopt_func func = (n, values, gradient, data) => Evaluate((int)n, values, gradient, objective);
-			_funcCache.Add(objective, func);
+			_funcCache.Add((objective, func));
 			var res = nlopt_set_min_objective(_opt, func, IntPtr.Zero);
 			if (res != NloptResult.SUCCESS)
 				throw new ArgumentException("Unable to set the objective function. Result: " + res, "objective");
@@ -310,7 +310,7 @@ namespace NLoptNet
 		public void SetMaxObjective(Func<double[], double> objective)
 		{
 			nlopt_func func = (n, values, gradient, data) => Evaluate((int)n, values, objective);
-			_funcCache.Add(objective, func);
+			_funcCache.Add((objective, func));
 			var res = nlopt_set_max_objective(_opt, func, IntPtr.Zero);
 			if (res != NloptResult.SUCCESS)
 				throw new ArgumentException("Unable to set the objective function. Result: " + res, "objective");
@@ -319,7 +319,7 @@ namespace NLoptNet
 		public void SetMaxObjective(Func<double[], double[], double> objective)
 		{
 			nlopt_func func = (n, values, gradient, data) => Evaluate((int)n, values, gradient, objective);
-			_funcCache.Add(objective, func);
+			_funcCache.Add((objective, func));
 			var res = nlopt_set_max_objective(_opt, func, IntPtr.Zero);
 			if (res != NloptResult.SUCCESS)
 				throw new ArgumentException("Unable to set the objective function. Result: " + res, "objective");
