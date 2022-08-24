@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
-    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
-    <nuspecfile>NLoptNet.nuspec</nuspecfile>
-    <NuspecProperties>version=$(PackageVersion)</NuspecProperties>
+    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
     <RootNamespace>NLoptNet</RootNamespace>
     <PackageVersion>1.4.2</PackageVersion>
     <Platforms>AnyCPU</Platforms>
@@ -15,7 +13,7 @@
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>  
     <Authors>Brannon King</Authors>
     <PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
-    <PackageReleaseNotes>Support for .NET Standard and .NET Framework</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed net48 deployment, Fixed delegates as key</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
     <AssemblyVersion>1.4.2</AssemblyVersion>
     <FileVersion>1.4.2</FileVersion>
@@ -61,15 +59,12 @@
     <None Include="runtimes\win-x86\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.lib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="lib/net472/nlopt_x64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="lib/net472/nlopt_x32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)'=='net47'">
-	<dll32bit Include="$(ProjectDir)\runtimes\win-x86\native\nlopt.dll" />
-	<dll64bit Include="$(ProjectDir)\runtimes\win-x64\native\nlopt.dll" />
-  </ItemGroup>
-  <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(TargetFramework)'=='net47'">
-    <Copy SourceFiles="@(dll32bit)" DestinationFiles="$(OutDir)\nlopt_x32.dll" />
-	<Copy SourceFiles="@(dll64bit)" DestinationFiles="$(OutDir)\nlopt_x64.dll" />
-  </Target>
 
 </Project>
