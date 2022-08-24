@@ -17,6 +17,9 @@
     <PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
     <PackageReleaseNotes>Support for .NET Standard and .NET Framework</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
+    <FileVersion>1.4.1.0</FileVersion>
+    <AssemblyVersion>1.4.1.0</AssemblyVersion>
+    <Version>1.4.1</Version>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
