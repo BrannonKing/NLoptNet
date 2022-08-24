@@ -8,9 +8,10 @@ namespace NLoptNet.Tests
 {
 	public class SolverTests
 	{
-		public SolverTests()
+		static SolverTests()
 		{
 			NativeLibrary.TryLoad($"runtimes/linux-x64/native/nlopt.so", out _);
+			NativeLibrary.TryLoad($"runtimes/win-x64/native/nlopt.dll", out _);
 		}
 		
 		[Fact]

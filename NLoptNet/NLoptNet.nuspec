@@ -2,10 +2,10 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 	<metadata>
 		<id>nloptnet</id>
-		<version>1.4.1</version>
+		<version>1.4.2</version>
 		<authors>Brannon King</authors>
 		<description>This is a wrapper around the NLopt library. Binaries are included.</description>
-		<releaseNotes>Reducing installation warnings.</releaseNotes>
+		<releaseNotes>Allow multiple contraint delegates wi</releaseNotes>
 		<tags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</tags>
 		<repository type="git" url="https://github.com/BrannonKing/NLoptNet"></repository>
 		<dependencies>

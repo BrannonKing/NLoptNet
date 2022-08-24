@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLoptNet", "NLoptNet\NLoptNet.csproj", "{861744EF-3C2B-4755-8753-1EEB13AF30B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLoptNet.Tests", "NLoptNet.Tests\NLoptNet.Tests.csproj", "{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLoptNet.NuGet.Tests", "NLoptNet.NuGet.Tests\NLoptNet.NuGet.Tests.csproj", "{6781C965-513E-4717-A0AD-A1EF339DDEC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,17 +24,13 @@ Global
 		{861744EF-3C2B-4755-8753-1EEB13AF30B7}.Release|x64.ActiveCfg = Release|Any CPU
 		{861744EF-3C2B-4755-8753-1EEB13AF30B7}.Release|x64.Build.0 = Release|Any CPU
 		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Debug|Any CPU.Build.0 = Debug|x64
 		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Debug|x64.ActiveCfg = Debug|x64
 		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Debug|x64.Build.0 = Debug|x64
 		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Release|Any CPU.ActiveCfg = Release|x64
+		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Release|Any CPU.Build.0 = Release|x64
 		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Release|x64.ActiveCfg = Release|x64
 		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Release|x64.Build.0 = Release|x64
-		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Debug|Any CPU.Build.0 = Debug|x64
-		{3FBAF56F-C4EB-4AB0-82EB-947ADD2E6E97}.Release|Any CPU.Build.0 = Release|x64
-		{6781C965-513E-4717-A0AD-A1EF339DDEC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6781C965-513E-4717-A0AD-A1EF339DDEC1}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6781C965-513E-4717-A0AD-A1EF339DDEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6781C965-513E-4717-A0AD-A1EF339DDEC1}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
