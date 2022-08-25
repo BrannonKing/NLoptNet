@@ -1,70 +1,67 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
-    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
-    <RootNamespace>NLoptNet</RootNamespace>
-    <PackageVersion>1.4.2</PackageVersion>
-    <Platforms>AnyCPU</Platforms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageOutputPath>../pack</PackageOutputPath>
-    <PlatformTarget>$(Platform)</PlatformTarget>
-    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>  
-    <Authors>Brannon King</Authors>
-    <PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
-    <PackageReleaseNotes>Fixed net48 deployment, Fixed delegates as key</PackageReleaseNotes>
-    <RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
-    <AssemblyVersion>1.4.2</AssemblyVersion>
-    <FileVersion>1.4.2</FileVersion>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>         
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+	<PropertyGroup>
+		<RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
+		<TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
+		<RootNamespace>NLoptNet</RootNamespace>
+		<PackageVersion>1.4.2</PackageVersion>
+		<Platforms>AnyCPU</Platforms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageOutputPath>../pack</PackageOutputPath>
+		<PlatformTarget>$(Platform)</PlatformTarget>
+		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+		<Authors>Brannon King</Authors>
+		<PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
+		<PackageReleaseNotes>Fixed net48 deployment, Fixed delegates as key</PackageReleaseNotes>
+		<RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
+		<AssemblyVersion>1.4.2</AssemblyVersion>
+		<FileVersion>1.4.2</FileVersion>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <DefineConstants>TRACE;RELEASE</DefineConstants>
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>        
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DefineConstants>TRACE;DEBUG</DefineConstants>
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="runtimes\linux-arm64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-arm64/native/nlopt.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\linux-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-x64/native/nlopt.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\linux-musl-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-musl-x64/native/nlopt.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x64\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.exp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x64\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.lib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x86\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.exp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x86\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.lib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="lib/net472/nlopt_x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="lib/net472/nlopt_x32.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DefineConstants>TRACE;RELEASE</DefineConstants>
+		<DebugType>none</DebugType>
+		<DebugSymbols>false</DebugSymbols>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="runtimes\linux-arm64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-arm64/native/nlopt.so">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="runtimes\linux-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-x64/native/nlopt.so">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="runtimes\linux-musl-x64\native\nlopt.so" Pack="true" PackagePath="runtimes/linux-musl-x64/native/nlopt.so">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="runtimes\win-x64\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="runtimes\win-x64\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.exp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="runtimes\win-x64\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x64/native/nlopt.lib">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="runtimes\win-x86\native\nlopt.dll" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="runtimes\win-x86\native\nlopt.exp" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.exp">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="runtimes\win-x86\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.lib">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="NLoptNet.targets" Pack="true" PackagePath="build/net47">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>
