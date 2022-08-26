@@ -12,17 +12,9 @@ namespace NLoptNet
 		private const string NLopt32 = "nlopt_x32.dll";
 		private const string NLopt64 = "nlopt_x64.dll";
 
-		[DllImport("kernel32", SetLastError = true)]
-		private static extern IntPtr LoadLibrary(string lpFileName);
-		
 		#region Imported NLOpt functions - .NET Framework
 		
 		#if NETFRAMEWORK
-		
-		static NLoptSolver()
-		{
-			LoadLibrary($"nlopt_{Subscript}.dll");
-		}
 		
 		[DllImport(NLopt64, EntryPoint = nameof(nlopt_version), CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_version64(out int major, out int minor, out int bugfix);
