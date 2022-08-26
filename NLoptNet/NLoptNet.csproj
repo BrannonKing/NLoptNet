@@ -5,7 +5,7 @@
 		<TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
 		<RootNamespace>NLoptNet</RootNamespace>
 		<PackageVersion>1.4.2</PackageVersion>
-		<Platforms>AnyCPU</Platforms>
+		<Platforms>AnyCPU;x86</Platforms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageOutputPath>../pack</PackageOutputPath>
@@ -17,6 +17,9 @@
 		<RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
 		<AssemblyVersion>1.4.2</AssemblyVersion>
 		<FileVersion>1.4.2</FileVersion>
+		<Title>NLoptNet</Title>
+		<Description>This is a wrapper around the NLopt library. NLopt binaries are included.</Description>
+		<Copyright>2022</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">

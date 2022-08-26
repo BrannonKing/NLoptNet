@@ -576,14 +576,18 @@ namespace NLoptNet
 		/// <param name="p_gradient">Memory pointer to C++ gradient array.</param>
 		private void CheckGradientHandling(IntPtr p_gradient)
 		{
+#if DEBUG
 			if (p_gradient != IntPtr.Zero)
 				throw new InvalidOperationException("Expected the constraint to handle the gradient.");
+#endif
 		}
 #else
 		private void CheckGradientHandling(double[] gradient)
 		{
+#if DEBUG
 			if (gradient != null)
 				throw new InvalidOperationException("Expected the constraint to handle the gradient.");
+#endif
 		}
 #endif
 	}

@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\nlopt.dll">
+    <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\nlopt.dll" Condition="'$(Platform)'!='x86'">
       <Link>nlopt_x64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\native\nlopt.dll">
+    <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\native\nlopt.dll" Condition="'$(Platform)'!='x64'">
       <Link>nlopt_x32.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

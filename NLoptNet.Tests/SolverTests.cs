@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Runtime.Loader;
+using System.Text.RegularExpressions;
 using Xunit;
 
 
@@ -10,8 +12,15 @@ namespace NLoptNet.Tests
 	{
 		static SolverTests()
 		{
-			NativeLibrary.TryLoad($"runtimes/linux-x64/native/nlopt.so", out _);
-			NativeLibrary.TryLoad($"runtimes/win-x64/native/nlopt.dll", out _);
+			AssemblyLoadContext.Default.ResolvingUnmanagedDll += (assembly, name) =>
+			{
+				var rid = RuntimeInformation.RuntimeIdentifier;
+				rid = Regex.Replace(rid, @"\d+-", @"-");
+				var ext = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "dll" : "so";
+				NativeLibrary.TryLoad($"runtimes/{rid}/native/{name}.{ext}", out var handle);
+				return handle;
+
+			};
 		}
 		
 		[Fact]
