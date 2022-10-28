@@ -17,7 +17,17 @@ namespace NLoptNet.Tests
 				var rid = RuntimeInformation.RuntimeIdentifier;
 				rid = Regex.Replace(rid, @"\d+-", @"-");
 				var ext = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "dll" : "so";
-				NativeLibrary.TryLoad($"runtimes/{rid}/native/{name}.{ext}", out var handle);
+				var loaded = NativeLibrary.TryLoad($"runtimes/{rid}/native/{name}.{ext}", out var handle);
+				if (!loaded)
+				{
+					if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+						rid = "linux-";
+					else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+						rid = "win-";
+					rid += RuntimeInformation.ProcessArchitecture.ToString().ToLower();
+					loaded = NativeLibrary.TryLoad($"runtimes/{rid}/native/{name}.{ext}", out handle);
+					Assert.True(loaded);
+				}
 				return handle;
 
 			};

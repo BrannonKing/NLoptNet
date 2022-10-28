@@ -1,9 +1,4 @@
-﻿#if (__MonoCS__ || (UNITY_5_3_OR_NEWER && ENABLE_MONO))
-// Detect if mono is used
-#define MONO
-#endif
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -14,25 +9,14 @@ namespace NLoptNet
 	/// </summary>
 	public partial class NLoptSolver : IDisposable
 	{
-#if MONO
-				[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-				private delegate double nlopt_func(
-					uint n,
-					IntPtr p_x,
-					IntPtr p_gradient,
-					IntPtr data
-				);
-#else
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate double nlopt_func(
 			uint n,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In] double[] x,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In, Out] double[] gradient,
+			IntPtr p_x,
+			IntPtr p_gradient,
 			IntPtr data
 		);
-#endif
 
-#if MONO
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void nlopt_mfunc(
 			uint m,
@@ -42,17 +26,6 @@ namespace NLoptNet
 			IntPtr p_gradient,
 			IntPtr data
 		);
-#else
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void nlopt_mfunc(
-			uint m,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), In, Out] double[] result,
-			uint n,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In] double[] x,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), In, Out] double[] gradient,
-			IntPtr data
-		);
-#endif
 
 		private IntPtr _opt;
 		private readonly List<(Delegate, nlopt_func)> _funcCache = new List<(Delegate, nlopt_func)>();
@@ -414,7 +387,6 @@ namespace NLoptNet
 			return nlopt_get_xtol_rel(_opt);
 		}
 
-#if MONO
 		/// <summary>
 		/// Wrapper around <paramref name="func"/> to init marshalled data if required.
 		/// </summary>
@@ -434,14 +406,7 @@ namespace NLoptNet
 
 			return func.Invoke(values);
 		}
-#else
-		private double Evaluate(int n, double[] values, Func<double[], double> func)
-		{
-			return func.Invoke(values);
-		}
-#endif
 
-#if MONO
 		/// <summary>
 		/// Wrapper around <paramref name="func"/> to init marshalled data if required.
 		/// </summary>
@@ -477,14 +442,7 @@ namespace NLoptNet
 
 			return result;
 		}
-#else
-		private double Evaluate(int n, double[] values, double[] gradient, Func<double[], double[], double> func)
-		{
-			return func.Invoke(values, gradient);
-		}
-#endif
 
-#if MONO
 		/// <summary>
 		/// Wrapper around <paramref name="action"/> to init marshalled data if required.
 		/// </summary>
@@ -514,14 +472,7 @@ namespace NLoptNet
 				Marshal.Copy(results, 0, p_results, m);
 			}
 		}
-#else
-		private void Evaluate(int n, double[] values, int m, double[] results, Action<double[], double[]> action)
-		{
-			action.Invoke(values, results);
-		}
-#endif
 
-#if MONO
 		/// <summary>
 		/// Wrapper around <paramref name="action"/> to init marshalled data if required.
 		/// </summary>
@@ -538,7 +489,7 @@ namespace NLoptNet
 			// values is marshalled as IN only (read only)
 			var results = new double[m];
 			var values = new double[n];
-			var gradient = new double[n];
+			var gradient = new double[n*m];  // n*m is the reason we're doing manual marshalling (and Mono support)
 
 			if (p_values != IntPtr.Zero)
 			{
@@ -546,7 +497,7 @@ namespace NLoptNet
 			}
 			if (p_gradient != IntPtr.Zero)
 			{
-				Marshal.Copy(p_gradient, gradient, 0, n);
+				Marshal.Copy(p_gradient, gradient, 0, n*m);
 			}
 
 			action.Invoke(values, gradient, results);
@@ -555,21 +506,14 @@ namespace NLoptNet
 			// Update C++ handles with new values
 			if (p_gradient != IntPtr.Zero)
 			{
-				Marshal.Copy(gradient, 0, p_gradient, n);
+				Marshal.Copy(gradient, 0, p_gradient, n*m);
 			}
 			if (p_results != IntPtr.Zero)
 			{
 				Marshal.Copy(results, 0, p_results, m);
 			}
 		}
-#else
-		private void Evaluate(int n, double[] values, double[] gradient, int m, double[] results, Action<double[], double[], double[]> action)
-		{
-			action.Invoke(values, gradient, results);
-		}
-#endif
 
-#if MONO
 		/// <summary>
 		/// Force user to handle gradient in its gradient function is using a gradient based algorithm.
 		/// </summary>
@@ -581,14 +525,5 @@ namespace NLoptNet
 				throw new InvalidOperationException("Expected the constraint to handle the gradient.");
 #endif
 		}
-#else
-		private void CheckGradientHandling(double[] gradient)
-		{
-#if DEBUG
-			if (gradient != null)
-				throw new InvalidOperationException("Expected the constraint to handle the gradient.");
-#endif
-		}
-#endif
 	}
 }
