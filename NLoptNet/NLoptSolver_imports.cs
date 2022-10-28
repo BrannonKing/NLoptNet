@@ -1,14 +1,10 @@
-﻿namespace NLoptNet
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace NLoptNet
 {
-	using System;
-	using System.Runtime.InteropServices;
-	
     public partial class NLoptSolver
     {
-		#region Imported NLOpt functions - .NET Standard
-		
-		#if NETSTANDARD
-		
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_version(out int major, out int minor, out int bugfix);
 
@@ -87,9 +83,5 @@
 
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_get_xtol_abs(IntPtr opt, out double[] tol);
-
-		#endif
-		
-		#endregion
-    }
+   }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -27,6 +28,7 @@ namespace NLoptNet
 			IntPtr data
 		);
 
+		private static ArrayPool<double> _pool = ArrayPool<double>.Create();
 		private IntPtr _opt;
 		private readonly List<(Delegate, nlopt_func)> _funcCache = new List<(Delegate, nlopt_func)>();
 		private readonly List<(Delegate, nlopt_mfunc)> _mfuncCache = new List<(Delegate, nlopt_mfunc)>();
@@ -397,14 +399,21 @@ namespace NLoptNet
 		private double Evaluate(int n, IntPtr p_values, Func<double[], double> func)
 		{
 			// values is marshalled as IN only (read only)
-			var values = new double[n];
+			var values = _pool.Rent(n);
 
-			if (p_values != IntPtr.Zero)
+			try
 			{
-				Marshal.Copy(p_values, values, 0, n);
-			}
+				if (p_values != IntPtr.Zero)
+				{
+					Marshal.Copy(p_values, values, 0, n);
+				}
 
-			return func.Invoke(values);
+				return func.Invoke(values);
+			}
+			finally
+			{
+				_pool.Return(values);
+			}
 		}
 
 		/// <summary>
@@ -419,28 +428,38 @@ namespace NLoptNet
 		{
 			// gradient is IN/OUT (read and write)
 			// values is marshalled as IN only (read only)
-			var gradient = new double[n];
-			var values = new double[n];
+			
+			var gradient = _pool.Rent(n);
+			var values = _pool.Rent(n);
 
-			if (p_values != IntPtr.Zero)
+			try
 			{
-				Marshal.Copy(p_values, values, 0, n);
+				if (p_values != IntPtr.Zero)
+				{
+					Marshal.Copy(p_values, values, 0, n);
+				}
+
+				if (p_gradient != IntPtr.Zero)
+				{
+					Marshal.Copy(p_gradient, gradient, 0, n);
+				}
+
+				var result = func.Invoke(values, gradient);
+
+				// gradient has been altered
+				// Update C++ handles with new values
+				if (p_gradient != IntPtr.Zero)
+				{
+					Marshal.Copy(gradient, 0, p_gradient, n);
+				}
+
+				return result;
 			}
-			if (p_gradient != IntPtr.Zero)
+			finally
 			{
-				Marshal.Copy(p_gradient, gradient, 0, n);
+				_pool.Return(gradient);
+				_pool.Return(values);
 			}
-
-			var result = func.Invoke(values, gradient);
-
-			// gradient has been altered
-			// Update C++ handles with new values
-			if (p_gradient != IntPtr.Zero)
-			{
-				Marshal.Copy(gradient, 0, p_gradient, n);
-			}
-
-			return result;
 		}
 
 		/// <summary>
@@ -455,21 +474,29 @@ namespace NLoptNet
 		{
 			// results is IN/OUT (read and write)
 			// values is marshalled as IN only (read only)
-			var results = new double[m];
-			var values = new double[n];
+			var results = _pool.Rent(m);
+			var values = _pool.Rent(n);
 
-			if (p_values != IntPtr.Zero)
+			try
 			{
-				Marshal.Copy(p_values, values, 0, n);
+				if (p_values != IntPtr.Zero)
+				{
+					Marshal.Copy(p_values, values, 0, n);
+				}
+
+				action.Invoke(values, results);
+
+				// results has been altered
+				// Update C++ handle with new values
+				if (p_results != IntPtr.Zero)
+				{
+					Marshal.Copy(results, 0, p_results, m);
+				}
 			}
-
-			action.Invoke(values, results);
-
-			// results has been altered
-			// Update C++ handle with new values
-			if (p_results != IntPtr.Zero)
+			finally
 			{
-				Marshal.Copy(results, 0, p_results, m);
+				_pool.Return(results);
+				_pool.Return(values);
 			}
 		}
 
@@ -487,30 +514,41 @@ namespace NLoptNet
 		{
 			// results and gradient are IN/OUT (read and write)
 			// values is marshalled as IN only (read only)
-			var results = new double[m];
-			var values = new double[n];
-			var gradient = new double[n*m];  // n*m is the reason we're doing manual marshalling (and Mono support)
+			var results = _pool.Rent(m);
+			var values = _pool.Rent(n);
+			var gradient = _pool.Rent(n*m);  // n*m is the reason we're doing manual marshalling (and Mono support)
 
-			if (p_values != IntPtr.Zero)
+			try
 			{
-				Marshal.Copy(p_values, values, 0, n);
-			}
-			if (p_gradient != IntPtr.Zero)
-			{
-				Marshal.Copy(p_gradient, gradient, 0, n*m);
-			}
+				if (p_values != IntPtr.Zero)
+				{
+					Marshal.Copy(p_values, values, 0, n);
+				}
 
-			action.Invoke(values, gradient, results);
+				if (p_gradient != IntPtr.Zero)
+				{
+					Marshal.Copy(p_gradient, gradient, 0, n * m);
+				}
 
-			// gradient and results have been altered
-			// Update C++ handles with new values
-			if (p_gradient != IntPtr.Zero)
-			{
-				Marshal.Copy(gradient, 0, p_gradient, n*m);
+				action.Invoke(values, gradient, results);
+
+				// gradient and results have been altered
+				// Update C++ handles with new values
+				if (p_gradient != IntPtr.Zero)
+				{
+					Marshal.Copy(gradient, 0, p_gradient, n * m);
+				}
+
+				if (p_results != IntPtr.Zero)
+				{
+					Marshal.Copy(results, 0, p_results, m);
+				}
 			}
-			if (p_results != IntPtr.Zero)
+			finally
 			{
-				Marshal.Copy(results, 0, p_results, m);
+				_pool.Return(gradient);
+				_pool.Return(results);
+				_pool.Return(values);
 			}
 		}
 
